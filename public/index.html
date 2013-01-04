@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title></title>
+        <script type='text/javascript' src='http://localhost:8000/faye/client.js'></script>
+        <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.3.min.js'></script>
+        <style type="text/css">
+            .panle{
+                border: 1px solid #DDD;
+                height: 500px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 70%
+            }
+
+            .content{
+                height: 455px;
+                overflow: auto;
+            }
+
+            ul.messages{
+                list-style: none;
+            }
+
+            .foot{
+                border-top: 1px solid #DDD;    
+            }
+
+            .foot input.message{
+                width: 80%
+            }
+
+
+        </style>
+    </head> 
+    <body>
+        <div class='panle'>
+            <div class='message-panle'>
+                <div class='content'>
+                    <ul class='messages'>
+                    </ul>
+                </div>
+                <div class='foot'>
+                    <form name='send_message_form' class='send_message_form'>
+                        <input type='text' name='message' class='message' /><input type='submit' value='send' />
+                    </form>                
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script type="text/javascript">
+    Faye.Logging.logLevel = 'debug';
+    var faye_client = new Faye.Client('http://localhost:8000/faye');
+    faye_client.subscribe("/messages/new", function(data){
+        $("ul.messages").append("<li>"+ data.message +"</li>")
+    })
+
+    $("form.send_message_form").submit(function(){           
+        var msg = $("input:text[name=message]");
+        faye_client.publish("/messages/new", {
+            message : msg.val()
+        })
+        msg.val('');
+        return false
+    })
+</script>
