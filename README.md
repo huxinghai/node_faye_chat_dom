@@ -1,1 +1,1 @@
-使用nodejs 与 faye一个简单的dom
+使用<a href='http://nodejs.org/'>nodejs</a> 与 <a href='http://faye.jcoglan.com/'>faye</a>一个简单的聊天dom
