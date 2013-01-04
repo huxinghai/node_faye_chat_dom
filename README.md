@@ -1,0 +1,1 @@
+使用nodejs 与 faye一个简单的dom
